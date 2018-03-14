@@ -6,10 +6,9 @@ from __future__ import unicode_literals
 import signal
 
 try :
-    from PyQt5 import QtGui
-    from QWidgets import *
+    from PyQt5.QtWidgets import *
 except :
-    from PyQt4 import QtGui, QWidgets
+    from PyQt4 import QtGui
     from QtGui import *
 
 import config_reader
