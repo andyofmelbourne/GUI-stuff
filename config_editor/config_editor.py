@@ -6,19 +6,21 @@ from __future__ import unicode_literals
 import signal
 
 try :
-    from PyQt5 import QtCore, QtGui
+    from PyQt5 import QtGui
+    from QWidgets import *
 except :
-    from PyQt4 import QtCore, QtGui
+    from PyQt4 import QtGui, QWidgets
+    from QtGui import *
 
 import config_reader
 
-class QForm_w(QtGui.QWidget):
+class QForm_w(QWidget):
     """
     """
     def __init__(self, update_config):
         super(QForm_w, self).__init__()
         
-        self.layout = QtGui.QFormLayout()
+        self.layout = QFormLayout()
         self.setLayout(self.layout)
         self.is_vis = True
         self.l_eds  = []
@@ -26,10 +28,10 @@ class QForm_w(QtGui.QWidget):
         self.update_config = update_config
     
     def addRow(self, key, val, doc=None):
-        label = QtGui.QLabel(key)
+        label = QLabel(key)
         if doc is not None :
             label.setToolTip(doc)
-        self.l_eds.append(QtGui.QLineEdit(str(val)))
+        self.l_eds.append(QLineEdit(str(val)))
         self.l_eds[-1].editingFinished.connect(self.update_config)
         self.keys.append(key)
         self.layout.addRow(label, self.l_eds[-1])
@@ -47,7 +49,7 @@ class QForm_w(QtGui.QWidget):
             vals.append( (key, str(le.text()).strip()))
         return vals
 
-class Write_config_file_widget(QtGui.QWidget):
+class Write_config_file_widget(QWidget):
     """
     """
     def __init__(self, config_fnam, output_filename = None):
@@ -66,14 +68,14 @@ class Write_config_file_widget(QtGui.QWidget):
     
     def initUI(self):
         # Make a vertical stack
-        layout = QtGui.QVBoxLayout()
+        layout = QVBoxLayout()
         
         # add the layout to the central widget
         self.setLayout(layout)
         
         # add the output config filename 
         ################################    
-        fnam_label = QtGui.QLabel(self)
+        fnam_label = QLabel(self)
         fnam_label.setText('<b>'+self.output_filename+'</b>')
         layout.addWidget(fnam_label)
         
@@ -94,7 +96,7 @@ class Write_config_file_widget(QtGui.QWidget):
             # add the group collapsible widget
             ##################################  
             self.groups.append(group)
-            group_label = QtGui.QPushButton(group, self)
+            group_label = QPushButton(group, self)
             group_label.clicked.connect(self.forms[-1].toggle_disp)
             
             layout.addWidget(group_label)
@@ -112,13 +114,13 @@ class Write_config_file_widget(QtGui.QWidget):
                 # add the group collapsible widget
                 ##################################  
                 self.groups.append(group)
-                group_label = QtGui.QPushButton(group+'-advanced', self)
+                group_label = QPushButton(group+'-advanced', self)
                 group_label.clicked.connect(self.forms[-1].toggle_disp)
                 
                 layout.addWidget(group_label)
                 layout.addWidget(self.forms[-1])
          
-        verticalSpacer = QtGui.QSpacerItem(10, 10, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        verticalSpacer = QSpacerItem(10, 10, QSizePolicy.Minimum, QSizePolicy.Expanding)
         layout.addItem(verticalSpacer)
 
     def update_config(self):
@@ -132,10 +134,10 @@ class Write_config_file_widget(QtGui.QWidget):
 
 if __name__ == '__main__':
     signal.signal(signal.SIGINT, signal.SIG_DFL) # allow Control-C
-    app = QtGui.QApplication([])
+    app = QApplication([])
     
     # Qt main window
-    Mwin = QtGui.QMainWindow()
+    Mwin = QMainWindow()
     Mwin.setWindowTitle('config editor')
     
     config_widget = Write_config_file_widget('example.ini', 'example_output.ini')
